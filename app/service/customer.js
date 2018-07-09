@@ -14,12 +14,12 @@ class CustomerService extends Service {
         let sql_query = "SELECT * FROM CUSTOMER ";
         let sql_count = "SELECT COUNT(*) AS COUNT FROM CUSTOMER ";
         let count,results;
-        if(query.NUMBER !== undefined){
-            sql_query += " WHERE NUMBER like ? LIMIT "+(query.pi-1)+","+query.ps;
-            sql_count += " WHERE NUMBER like ? ";
+        if(query.NAME !== undefined){
+            sql_query += " WHERE NAME like ? LIMIT "+(query.pi-1)+","+query.ps;
+            sql_count += " WHERE NAME like ? ";
         }
-        count = yield app.mysql.query(sql_count,["%"+query.NUMBER+"%"]);
-        results = yield app.mysql.query(sql_query,["%"+query.NUMBER+"%"]);
+        count = yield app.mysql.query(sql_count,["%"+query.NAME+"%"]);
+        results = yield app.mysql.query(sql_query,["%"+query.NAME+"%"]);
         count = count[0].COUNT;
         const result = {
             total: count,
