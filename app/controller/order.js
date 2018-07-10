@@ -13,5 +13,19 @@ class OrderController extends Controller {
         ctx.body = result;
         ctx.status = 200;
     }
+
+    * save() {
+        const { ctx, service } = this;
+        const id = ctx.params.id;
+        let result;
+        if( id === "add" ){
+            result= yield service.order.insert();
+        }else{
+            result = yield service.order.update();
+        }
+        // 设置响应内容和响应状态码
+        ctx.body = result;
+        ctx.status = 200;
+    }
 }
 module.exports = OrderController;

@@ -27,5 +27,58 @@ class OrderService extends Service {
         };
         return result;
     }
+
+    /**订单新增 */
+    * insert() {
+        const { ctx,app } = this;
+        let base = ctx.request.body.base;
+        let detail = ctx.request.body.detail;
+        base.NUMBER = uuidv1();
+        base.OADATE = app.mysql.literals.now;
+        base.STATE = 0;
+        detail.NUMBER = base.NUMBER;
+        const conn = yield app.mysql.beginTransaction();
+        let result = {};
+        try {
+            const orderBase = yield conn.insert('ORDERS', base);
+            const orderDetail = yield conn.insert('ORDERS_DETAIL', detail);
+            yield conn.commit();
+            result.success = true;
+        } catch (err) {
+            yield conn.rollback();
+            result.success = false;
+            throw err;
+        }
+        return result;
+    }
+    /**订单更新 */
+    * update() {
+        const { ctx,app } = this;
+        const base = ctx.request.body.base;
+        const detail = ctx.request.body.detail;
+        const options_base = {
+            where: {
+                id: ctx.params.id
+            }
+        };
+        const options_detail = {
+            where: {
+                number: base.NUMBER
+            }
+        };
+        const conn = yield app.mysql.beginTransaction();
+        let result = {};
+        try {
+            const customerBase = yield conn.update('ORDERS', base,options_base);
+            const customerDetail = yield conn.update('ORDERS_DETAIL', detail,options_detail);
+            yield conn.commit();
+            result.success = true;
+        } catch (err) {
+            yield conn.rollback();
+            result.success = false;
+            throw err;
+        }
+        return result;
+    }
 };
 module.exports = OrderService;
