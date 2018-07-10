@@ -42,6 +42,14 @@ class CustomerController extends Controller {
       ctx.body = result;
       ctx.status = 200;
   }
+
+  * getDetail() {
+    const { ctx, service } = this;
+    const result = yield service.customer.getDetail();
+    // 设置响应内容和响应状态码
+    ctx.body = result;
+    ctx.status = 200;
+  }
 }
 
 module.exports = CustomerController;

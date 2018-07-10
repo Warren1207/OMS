@@ -12,4 +12,9 @@ module.exports = app => {
   /** 供应商主表保存 **/
   router.post('/customer/save/:id', controller.customer.save);
 
+  /** 供应商子表查询 **/
+  router.get('/customer/getDetail/:number', controller.customer.getDetail);
+
+  /** 订单主表查询 **/
+  router.get('/order/query', controller.order.query);
 };
