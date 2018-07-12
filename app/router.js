@@ -17,4 +17,6 @@ module.exports = app => {
 
   /** 订单主表查询 **/
   router.get('/order/query', controller.order.query);
+  /** 订单保存 **/
+  router.post('/order/save/:id', controller.order.save);
 };

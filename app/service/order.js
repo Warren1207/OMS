@@ -36,6 +36,16 @@ class OrderService extends Service {
         base.NUMBER = uuidv1();
         base.OADATE = app.mysql.literals.now;
         base.STATE = 0;
+         /** 日期格式字段处理 **/
+        if(base.ORDER_DATE){
+            base.ORDER_DATE= new Date(base.ORDER_DATE);
+        }
+        if(detail.DELIVERY_DATE){
+            detail.DELIVERY_DATE= new Date(detail.DELIVERY_DATE);
+        }
+        if(detail.EXPECT_DELIVERY_DATE){
+            detail.EXPECT_DELIVERY_DATE= new Date(detail.EXPECT_DELIVERY_DATE);
+        }
         detail.NUMBER = base.NUMBER;
         const conn = yield app.mysql.beginTransaction();
         let result = {};
