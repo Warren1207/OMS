@@ -28,6 +28,20 @@ class OrderService extends Service {
         return result;
     }
 
+    /** 查询单条订单数据 **/
+    * get() {
+        const id = this.ctx.params.id;
+        const result = yield this.app.mysql.get('ORDERS', { id: id });
+        return result;
+    }
+
+    /** 查询单条订单子表数据 **/
+    * getDetail() {
+        const number = this.ctx.params.number;
+        const result = yield this.app.mysql.get('ORDERS_DETAIL', { number: number });
+        return result;
+    }
+
     /**订单新增 */
     * insert() {
         const { ctx,app } = this;
@@ -66,6 +80,16 @@ class OrderService extends Service {
         const { ctx,app } = this;
         const base = ctx.request.body.base;
         const detail = ctx.request.body.detail;
+        /** 日期格式字段处理 **/
+        if(base.ORDER_DATE){
+            base.ORDER_DATE= new Date(base.ORDER_DATE);
+        }
+        if(detail.DELIVERY_DATE){
+            detail.DELIVERY_DATE= new Date(detail.DELIVERY_DATE);
+        }
+        if(detail.EXPECT_DELIVERY_DATE){
+            detail.EXPECT_DELIVERY_DATE= new Date(detail.EXPECT_DELIVERY_DATE);
+        }
         const options_base = {
             where: {
                 id: ctx.params.id
