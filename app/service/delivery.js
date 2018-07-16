@@ -47,25 +47,18 @@ class DeliveryService extends Service {
         const { ctx,app } = this;
         let base = ctx.request.body.base;
         let detail = ctx.request.body.detail;
-        base.NUMBER = uuidv1();
-        base.OADATE = app.mysql.literals.now;
-        base.STATE = 0;
+        base.OB01 = uuidv1();
         /** 日期格式字段处理 **/
-/*        if(base.ORDER_DATE){
-            base.ORDER_DATE= new Date(base.ORDER_DATE);
+        if(base.OB03){
+            base.OB03= new Date(base.OB03);
         }
-        if(detail.DELIVERY_DATE){
-            detail.DELIVERY_DATE= new Date(detail.DELIVERY_DATE);
-        }
-        if(detail.EXPECT_DELIVERY_DATE){
-            detail.EXPECT_DELIVERY_DATE= new Date(detail.EXPECT_DELIVERY_DATE);
-        }*/
-        detail.NUMBER = base.NUMBER;
+        detail.OBA01 = base.OB01;
         const conn = yield app.mysql.beginTransaction();
         let result = {};
         try {
-            const orderBase = yield conn.insert('BBOB', base);
-            const orderDetail = yield conn.insert('BBOBA', detail);
+            debugger;
+            yield conn.insert('BBOB', base);
+            yield conn.insert('BBOBA', detail);
             yield conn.commit();
             result.success = true;
         } catch (err) {
@@ -81,15 +74,9 @@ class DeliveryService extends Service {
         const base = ctx.request.body.base;
         const detail = ctx.request.body.detail;
         /** 日期格式字段处理 **/
-/*        if(base.ORDER_DATE){
-            base.ORDER_DATE= new Date(base.ORDER_DATE);
+        if(base.OB03){
+            base.OB03= new Date(base.OB03);
         }
-        if(detail.DELIVERY_DATE){
-            detail.DELIVERY_DATE= new Date(detail.DELIVERY_DATE);
-        }
-        if(detail.EXPECT_DELIVERY_DATE){
-            detail.EXPECT_DELIVERY_DATE= new Date(detail.EXPECT_DELIVERY_DATE);
-        }*/
         const options_base = {
             where: {
                 id: ctx.params.id
@@ -97,7 +84,7 @@ class DeliveryService extends Service {
         };
         const options_detail = {
             where: {
-                number: base.NUMBER
+                OBA01: base.OB01
             }
         };
         const conn = yield app.mysql.beginTransaction();
