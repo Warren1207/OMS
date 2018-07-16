@@ -21,4 +21,11 @@ module.exports = app => {
   router.get('/order/getDetail/:number', controller.order.getDetail);
   /** 订单保存 **/
   router.post('/order/save/:id', controller.order.save);
+
+    /** 出货单查询 **/
+    router.get('/delivery/query', controller.delivery.query);
+    router.get('/delivery/get/:id', controller.delivery.get);
+    router.get('/delivery/getDetail/:number', controller.delivery.getDetail);
+    /** 出货单保存 **/
+    router.post('/delivery/save/:id', controller.delivery.save);
 };
