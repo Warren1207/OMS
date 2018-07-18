@@ -22,10 +22,24 @@ module.exports = app => {
   /** 订单保存 **/
   router.post('/order/save/:id', controller.order.save);
 
-    /** 出货单查询 **/
-    router.get('/delivery/query', controller.delivery.query);
-    router.get('/delivery/get/:id', controller.delivery.get);
-    router.get('/delivery/getDetail/:number', controller.delivery.getDetail);
-    /** 出货单保存 **/
-    router.post('/delivery/save/:id', controller.delivery.save);
+  /** 出货单查询 **/
+  router.get('/delivery/query', controller.delivery.query);
+  router.get('/delivery/get/:id', controller.delivery.get);
+  router.get('/delivery/getDetail/:number', controller.delivery.getDetail);
+  /** 出货单保存 **/
+  router.post('/delivery/save/:id', controller.delivery.save);
+
+  /** 采购单查询 **/
+  router.get('/purchase/query', controller.purchase.query);
+  router.get('/purchase/get/:id', controller.purchase.get);
+  router.get('/purchase/getDetail/:number', controller.purchase.getDetail);
+  /** 采购单保存 **/
+  router.post('/purchase/save/:id', controller.purchase.save);
+
+  /** 收货单查询 **/
+  router.get('/receive/query', controller.receive.query);
+  router.get('/receive/get/:id', controller.receive.get);
+  router.get('/receive/getDetail/:number', controller.receive.getDetail);
+  /** 收货单保存 **/
+  router.post('/receive/save/:id', controller.receive.save);
 };

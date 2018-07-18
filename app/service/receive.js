@@ -6,20 +6,20 @@
 const Service = require('egg').Service;
 const uuidv1 = require('uuid/v1');
 
-class DeliveryService extends Service {
-    /**订单查询 */
+class ReceiveService extends Service {
+    /**采购单查询 */
     * query() {
         const { ctx,app } = this;
         const query = ctx.query;
-        let sql_query = "SELECT * FROM BBOB ";
-        let sql_count = "SELECT COUNT(*) AS COUNT FROM BBOB ";
+        let sql_query = "SELECT * FROM BBPB ";
+        let sql_count = "SELECT COUNT(*) AS COUNT FROM BBPB ";
         let count,results;
-        if(query.OB01 !== undefined){
-            sql_query += " WHERE OB01 like ? LIMIT "+(query.pi-1)+","+query.ps;
-            sql_count += " WHERE OB01 like ? ";
+        if(query.PB01 !== undefined){
+            sql_query += " WHERE PB01 like ? LIMIT "+(query.pi-1)+","+query.ps;
+            sql_count += " WHERE PB01 like ? ";
         }
-        count = yield app.mysql.query(sql_count,["%"+query.OB01+"%"]);
-        results = yield app.mysql.query(sql_query,["%"+query.OB01+"%"]);
+        count = yield app.mysql.query(sql_count,["%"+query.PB01+"%"]);
+        results = yield app.mysql.query(sql_query,["%"+query.PB01+"%"]);
         count = count[0].COUNT;
         const result = {
             total: count,
@@ -28,21 +28,21 @@ class DeliveryService extends Service {
         return result;
     }
 
-    /** 查询单条订单数据 **/
+    /** 查询单条采购单数据 **/
     * get() {
         const id = this.ctx.params.id;
-        const result = yield this.app.mysql.get('BBOB', { id: id });
+        const result = yield this.app.mysql.get('BBPB', { id: id });
         return result;
     }
 
-    /** 查询单条订单子表数据 **/
+    /** 查询单条采购单子表数据 **/
     * getDetail() {
-        const OB01 = this.ctx.params.OB01;
-        const result = yield this.app.mysql.get('BBOBA', { OB01: OB01 });
+        const PB01 = this.ctx.params.PB01;
+        const result = yield this.app.mysql.get('BBPBA', { PB01: PB01 });
         return result;
     }
 
-    /**订单新增 */
+    /**采购单新增 */
     * insert() {
         const { ctx,app } = this;
         let base = ctx.request.body.base;
@@ -57,8 +57,8 @@ class DeliveryService extends Service {
         let result = {};
         try {
             debugger;
-            yield conn.insert('BBOB', base);
-            yield conn.insert('BBOBA', detail);
+            yield conn.insert('BBPB', base);
+            yield conn.insert('BBPBA', detail);
             yield conn.commit();
             result.success = true;
         } catch (err) {
@@ -68,7 +68,7 @@ class DeliveryService extends Service {
         }
         return result;
     }
-    /**订单更新 */
+    /**采购单更新 */
     * update() {
         const { ctx,app } = this;
         const base = ctx.request.body.base;
@@ -90,8 +90,8 @@ class DeliveryService extends Service {
         const conn = yield app.mysql.beginTransaction();
         let result = {};
         try {
-            yield conn.update('BBOB', base,options_base);
-            yield conn.update('BBOBA', detail,options_detail);
+            yield conn.update('BBPB', base,options_base);
+            yield conn.update('BBPBA', detail,options_detail);
             yield conn.commit();
             result.success = true;
         } catch (err) {
@@ -102,4 +102,4 @@ class DeliveryService extends Service {
         return result;
     }
 }
-module.exports = DeliveryService;
+module.exports = ReceiveService;
