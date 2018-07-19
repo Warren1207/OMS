@@ -37,8 +37,8 @@ class DeliveryService extends Service {
 
     /** 查询单条订单子表数据 **/
     * getDetail() {
-        const OB01 = this.ctx.params.OB01;
-        const result = yield this.app.mysql.get('BBOBA', { OB01: OB01 });
+        const number = this.ctx.params.number;
+        const result = yield this.app.mysql.get('BBOBA', { OBA01: number });
         return result;
     }
 
@@ -56,7 +56,6 @@ class DeliveryService extends Service {
         const conn = yield app.mysql.beginTransaction();
         let result = {};
         try {
-            debugger;
             yield conn.insert('BBOB', base);
             yield conn.insert('BBOBA', detail);
             yield conn.commit();
@@ -76,6 +75,9 @@ class DeliveryService extends Service {
         /** 日期格式字段处理 **/
         if(base.OB03){
             base.OB03= new Date(base.OB03);
+        }
+        if(base.OB15){
+            base.OB15= new Date(base.OB15);
         }
         const options_base = {
             where: {

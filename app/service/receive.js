@@ -37,8 +37,8 @@ class ReceiveService extends Service {
 
     /** 查询单条采购单子表数据 **/
     * getDetail() {
-        const PB01 = this.ctx.params.PB01;
-        const result = yield this.app.mysql.get('BBPBA', { PB01: PB01 });
+        const number = this.ctx.params.number;
+        const result = yield this.app.mysql.get('BBPBA', { PBA01: number });
         return result;
     }
 
@@ -74,8 +74,8 @@ class ReceiveService extends Service {
         const base = ctx.request.body.base;
         const detail = ctx.request.body.detail;
         /** 日期格式字段处理 **/
-        if(base.OB03){
-            base.OB03= new Date(base.OB03);
+        if(base.PB03){
+            base.PB03= new Date(base.PB03);
         }
         const options_base = {
             where: {
@@ -84,7 +84,7 @@ class ReceiveService extends Service {
         };
         const options_detail = {
             where: {
-                OBA01: base.OB01
+                PBA01: base.PB01
             }
         };
         const conn = yield app.mysql.beginTransaction();

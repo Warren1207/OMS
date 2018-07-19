@@ -37,8 +37,8 @@ class PurchaseService extends Service {
 
     /** 查询单条采购单子表数据 **/
     * getDetail() {
-        const PA01 = this.ctx.params.PA01;
-        const result = yield this.app.mysql.get('BBPAA', { PA01: PA01 });
+        const number = this.ctx.params.number;
+        const result = yield this.app.mysql.get('BBPAA', { PAA01: number });
         return result;
     }
 
@@ -74,9 +74,22 @@ class PurchaseService extends Service {
         const base = ctx.request.body.base;
         const detail = ctx.request.body.detail;
         /** 日期格式字段处理 **/
-        if(base.OB03){
-            base.OB03= new Date(base.OB03);
+        if(base.PA03){
+            base.PA03= new Date(base.PA03);
         }
+        if(base.PA15){
+            base.PA15= new Date(base.PA15);
+        }
+        if(detail.PAA12){
+            detail.PAA12= new Date(detail.PAA12);
+        }
+        if(detail.PAA13){
+            detail.PAA13= new Date(detail.PAA13);
+        }
+        if(detail.PAA14){
+            detail.PAA14= new Date(detail.PAA14);
+        }
+
         const options_base = {
             where: {
                 id: ctx.params.id
@@ -84,7 +97,7 @@ class PurchaseService extends Service {
         };
         const options_detail = {
             where: {
-                OBA01: base.OB01
+                PAA01: base.PA01
             }
         };
         const conn = yield app.mysql.beginTransaction();
